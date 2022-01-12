@@ -23,18 +23,11 @@ export default {
     },
     package: "com.witeseb.tcons",
     versionCode: 4,
-    config: {
-      googleMaps: {
-        apiKey: "AIzaSyAjiPYe1TXz1PECCkZBxVUkcXKVPm0mZ0w",
-      },
-    },
-    permissions: [
-      "RECEIVE_BOOT_COMPLETED",
-      "ACCESS_COARSE_LOCATION",
-      "ACCESS_FINE_LOCATION",
-    ],
   },
   web: {
     favicon: "./assets/favicon.png",
+  },
+  extra: {
+    GOOGLE_MAP_API_KEY: "AIzaSyC04B8E84MbzmNhZAnvUtPbTSom6aYJmOw",
   },
 };

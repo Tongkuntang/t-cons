@@ -1,8 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import * as SplashScreen from "expo-splash-screen";
 import { extendTheme, NativeBaseProvider } from "native-base";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { DetailScreen, HomeScreen, ListScreen } from "./src/screens";
 
 const Stack = createNativeStackNavigator();
@@ -42,29 +41,6 @@ const theme = extendTheme({
 });
 
 const App = () => {
-  const [appIsReady, setAppIsReady] = useState(false);
-
-  useEffect(() => {
-    async function prepare() {
-      try {
-        await SplashScreen.preventAutoHideAsync();
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-      } catch (e) {
-        console.log(e);
-      } finally {
-        setAppIsReady(true);
-      }
-    }
-
-    prepare();
-  }, []);
-
-  useEffect(async () => {
-    if (appIsReady) {
-      await SplashScreen.hideAsync();
-    }
-  }, [appIsReady]);
-
   return (
     <NativeBaseProvider theme={theme}>
       <NavigationContainer>
