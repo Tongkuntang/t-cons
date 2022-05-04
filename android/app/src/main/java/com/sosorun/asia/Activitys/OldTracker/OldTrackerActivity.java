@@ -5,9 +5,9 @@
  * 创建日期：2019年09月27日
  * **************************************************************************************/
 
-package Activitys.OldTracker;
+package com.sosorun.asia.Activitys.OldTracker;
 
-import static com.onecoder.fitblekitdemo.Activitys.ScanDevices.DevicesScanActivity.SCAN_ACTIVITY_BACK;
+import static com.sosorun.asia.Activitys.ScanDevices.DevicesScanActivity.SCAN_ACTIVITY_BACK;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
@@ -24,16 +24,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.ReactMethod;
 import com.onecoder.fitblekit.API.Base.FBKApiBsaeMethod;
 import com.onecoder.fitblekit.API.OldTracker.FBKApiOldTracker;
 import com.onecoder.fitblekit.API.OldTracker.FBKApiOldTrackerCallBack;
 import com.onecoder.fitblekit.Ble.FBKBleDevice.FBKBleDeviceStatus;
 import com.onecoder.fitblekit.Protocol.Common.Parameter.FBKParaSleep;
 import com.onecoder.fitblekit.Protocol.Common.Parameter.FBKParaUserInfo;
-import com.onecoder.fitblekitdemo.Activitys.HeartRate.HeartRateActivity;
-import com.onecoder.fitblekitdemo.Activitys.NewTracker.RecordActivity;
-import com.onecoder.fitblekitdemo.Activitys.ScanDevices.DevicesScanActivity;
-import com.onecoder.fitblekitdemo.R;
+import com.sosorun.asia.Activitys.HeartRate.HeartRateActivity;
+import com.sosorun.asia.Activitys.NewTracker.RecordActivity;
+import com.sosorun.asia.Activitys.ScanDevices.DevicesScanActivity;
+import com.sosorun.asia.R;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -238,10 +240,8 @@ public class OldTrackerActivity extends Activity {
         }
     };
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_oldtracker);
+    @ReactMethod
+    public void onCreate(Callback callBack) {
         m_apiOldTracker = new FBKApiOldTracker(OldTrackerActivity.this, m_apiOldTrackerCallBack);
         m_apiOldTracker.registerBleListenerReceiver();
         FBKParaUserInfo myUserInfo = new FBKParaUserInfo();
@@ -263,16 +263,7 @@ public class OldTrackerActivity extends Activity {
         mySleepInfo.setWeekendEndMinute(0);
         m_apiOldTracker.setSleepInfo(mySleepInfo);
         m_apiOldTracker.setBikeInfo(2.096);
-        m_OldTrackerArray.clear();
-        m_OldTrackerArray.add("Get Record");
-        m_OldTrackerArray.add("Read Battery Power");
-        m_OldTrackerArray.add("Read Firmware Version");
-        m_OldTrackerArray.add("Read Hardware Version");
-        m_OldTrackerArray.add("Read Software Version");
-        m_OldTrackerArray.add("Private get version");
-        m_OldTrackerArray.add("Private get mac");
-        m_OldTrackerArray.add("Private Enter OTA Mode");
-        initView();
+        m_apiOldTracker.getOldTrackerRecord();
     }
 
     @Override
@@ -281,76 +272,7 @@ public class OldTrackerActivity extends Activity {
         m_apiOldTracker.disconnectBle();
         m_apiOldTracker.unregisterBleListenerReceiver();
     }
-    private void initView() {
-        m_statusText = (TextView) this.findViewById(R.id.oldtracker_text_status);
-        m_stepsText = (TextView) this.findViewById(R.id.oldtracker_text_steps);
-        m_caloriesText = (TextView) this.findViewById(R.id.oldtracker_text_calories);
-        m_distanceText = (TextView) this.findViewById(R.id.oldtracker_text_distance);
-        m_heartRateText = (TextView) this.findViewById(R.id.oldtracker_text_heartrate);
-        m_OldTrackerListView = (ListView) this.findViewById(R.id.oldtracker_list);
-        m_OldTrackerAdapter = new BaseAdapter() {
-            @Override
-            public int getCount() {
-                return m_OldTrackerArray.size();
-            }
 
-            @Override
-            public Object getItem(int position) {
-                return null;
-            }
-
-            @Override
-            public long getItemId(int position) {
-                return 0;
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                LayoutInflater inflater = OldTrackerActivity.this.getLayoutInflater();
-                if (convertView == null) {
-                    convertView = inflater.inflate(R.layout.listview_main,null);
-                }
-
-                TextView title = (TextView) convertView.findViewById(R.id.list_text_name);
-                title.setText((position+1) + "、" + m_OldTrackerArray.get(position));
-
-                ImageView chooseImg = (ImageView) convertView.findViewById(R.id.list_image_choose);
-                chooseImg.setVisibility(View.INVISIBLE);
-
-                return convertView;
-            }
-        };
-        m_OldTrackerListView.setAdapter(m_OldTrackerAdapter);
-        m_OldTrackerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    m_apiOldTracker.getOldTrackerRecord();
-                }
-                else if (position == 1) {
-                    m_apiOldTracker.readDeviceBatteryPower();
-                }
-                else if (position == 2) {
-                    m_apiOldTracker.readFirmwareVersion();
-                }
-                else if (position == 3) {
-                    m_apiOldTracker.readHardwareVersion();
-                }
-                else if (position == 4) {
-                    m_apiOldTracker.readSoftwareVersion();
-                }
-                else if (position == 5) {
-                    m_apiOldTracker.getPrivateVersion();
-                }
-                else if (position == 6) {
-                    m_apiOldTracker.getPrivateMacAddress();
-                }
-                else if (position == 7) {
-                    m_apiOldTracker.enterOTAMode();
-                }
-            }
-        });
-    }
     public void backAction(View view) {
         finish();
     }

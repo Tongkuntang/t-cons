@@ -5,9 +5,9 @@
  * 创建日期：2019年08月22日
  ****************************************************************************************/
 
-package Activitys.NewScale;
+package com.sosorun.asia.Activitys.NewScale;
 
-import static com.onecoder.fitblekitdemo.Activitys.ScanDevices.DevicesScanActivity.SCAN_ACTIVITY_BACK;
+import static com.sosorun.asia.Activitys.ScanDevices.DevicesScanActivity.SCAN_ACTIVITY_BACK;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
@@ -29,9 +29,9 @@ import com.onecoder.fitblekit.API.NewScale.FBKApiNewScale;
 import com.onecoder.fitblekit.API.NewScale.FBKApiNewScaleCallBack;
 import com.onecoder.fitblekit.API.NewScale.FBKWeightUnits;
 import com.onecoder.fitblekit.Ble.FBKBleDevice.FBKBleDeviceStatus;
-import com.onecoder.fitblekitdemo.Activitys.NewTracker.NewTrackerActivity;
-import com.onecoder.fitblekitdemo.Activitys.ScanDevices.DevicesScanActivity;
-import com.onecoder.fitblekitdemo.R;
+import com.sosorun.asia.Activitys.NewTracker.NewTrackerActivity;
+import com.sosorun.asia.Activitys.ScanDevices.DevicesScanActivity;
+import com.sosorun.asia.R;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -212,24 +212,23 @@ public class NewScaleActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_newscale);
 
         Log.e(TAG,"NewScaleActivity---"+Thread.currentThread().getId());
 
         m_apiNewScale = new FBKApiNewScale(NewScaleActivity.this, m_newScaleCallBack);
         m_apiNewScale.registerBleListenerReceiver();
         m_newScaleArray.clear();
-        m_newScaleArray.add("Set Time");
-        m_newScaleArray.add("Set Units");
-        m_newScaleArray.add("Get Record");
-        m_newScaleArray.add("Read Battery Power");
-        m_newScaleArray.add("Read Firmware Version");
-        m_newScaleArray.add("Read Hardware Version");
-        m_newScaleArray.add("Read Software Version");
-        m_newScaleArray.add("Private get version");
-        m_newScaleArray.add("Private get mac");
-        m_newScaleArray.add("Private Enter OTA Mode");
-        initView();
+//        m_newScaleArray.add("Set Time");
+//        m_newScaleArray.add("Set Units");
+//        m_newScaleArray.add("Get Record");
+//        m_newScaleArray.add("Read Battery Power");
+//        m_newScaleArray.add("Read Firmware Version");
+//        m_newScaleArray.add("Read Hardware Version");
+//        m_newScaleArray.add("Read Software Version");
+//        m_newScaleArray.add("Private get version");
+//        m_newScaleArray.add("Private get mac");
+//        m_newScaleArray.add("Private Enter OTA Mode");
+//        initView();
     }
 
 
@@ -253,83 +252,7 @@ public class NewScaleActivity extends Activity {
      * 输入参数：
      * 返回数据：
      ************************************************************************************/
-    private void initView() {
-        m_statusText = (TextView) this.findViewById(R.id.newscale_text_status);
-        m_weightText = (TextView) this.findViewById(R.id.newscale_text_weight);
-        m_timeText = (TextView) this.findViewById(R.id.newscale_text_time);
 
-        m_newScaleListView = (ListView) this.findViewById(R.id.newscale_list);
-        m_newScaleAdapter = new BaseAdapter() {
-            @Override
-            public int getCount() {
-                return m_newScaleArray.size();
-            }
-
-            @Override
-            public Object getItem(int position) {
-                return null;
-            }
-
-            @Override
-            public long getItemId(int position) {
-                return 0;
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                LayoutInflater inflater = NewScaleActivity.this.getLayoutInflater();
-                if (convertView == null) {
-                    convertView = inflater.inflate(R.layout.listview_main,null);
-                }
-
-                TextView title = (TextView) convertView.findViewById(R.id.list_text_name);
-                title.setText((position+1) + "、" + m_newScaleArray.get(position));
-
-                ImageView chooseImg = (ImageView) convertView.findViewById(R.id.list_image_choose);
-                chooseImg.setVisibility(View.INVISIBLE);
-
-                return convertView;
-            }
-        };
-
-
-        m_newScaleListView.setAdapter(m_newScaleAdapter);
-        m_newScaleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    m_apiNewScale.setUTC(new Date());
-                }
-                else if (position == 1) {
-                    m_apiNewScale.setScaleUnit(FBKWeightUnits.WeightUnitsKG);
-                }
-                else if (position == 2) {
-                    m_apiNewScale.getWeightRecord();
-                }
-                else if (position == 3) {
-                    m_apiNewScale.readDeviceBatteryPower();
-                }
-                else if (position == 4) {
-                    m_apiNewScale.readFirmwareVersion();
-                }
-                else if (position == 5) {
-                    m_apiNewScale.readHardwareVersion();
-                }
-                else if (position == 6) {
-                    m_apiNewScale.readSoftwareVersion();
-                }
-                else if (position == 7) {
-                    m_apiNewScale.getPrivateVersion();
-                }
-                else if (position == 8) {
-                    m_apiNewScale.getPrivateMacAddress();
-                }
-                else if (position == 9) {
-                    m_apiNewScale.enterOTAMode();
-                }
-            }
-        });
-    }
 
 
     /************************************************************************************

@@ -5,9 +5,9 @@
  * 创建日期：2019年09月27日
  * **************************************************************************************/
 
-package Activitys.HeartRate;
+package com.sosorun.asia.Activitys.HeartRate;
 
-import static com.onecoder.fitblekitdemo.Activitys.ScanDevices.DevicesScanActivity.SCAN_ACTIVITY_BACK;
+import static com.sosorun.asia.Activitys.ScanDevices.DevicesScanActivity.SCAN_ACTIVITY_BACK;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
@@ -24,14 +24,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.hb.dialog.myDialog.MyAlertInputDialog;
 import com.onecoder.fitblekit.API.Base.FBKApiBsaeMethod;
 import com.onecoder.fitblekit.API.HeartRate.FBKApiHeartRate;
 import com.onecoder.fitblekit.API.HeartRate.FBKApiHeartRateCallBack;
 import com.onecoder.fitblekit.Ble.FBKBleDevice.FBKBleDeviceStatus;
-import com.onecoder.fitblekitdemo.Activitys.NewTracker.RecordActivity;
-import com.onecoder.fitblekitdemo.Activitys.ScanDevices.DevicesScanActivity;
-import com.onecoder.fitblekitdemo.R;
+import com.sosorun.asia.Activitys.NewTracker.RecordActivity;
+import com.sosorun.asia.Activitys.ScanDevices.DevicesScanActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -66,8 +64,6 @@ public class HeartRateActivity extends Activity {
 
     // 心率
     private TextView m_heartText;
-
-    private MyAlertInputDialog m_inputDialog;
 
 
     // 数据回调
@@ -228,22 +224,10 @@ public class HeartRateActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_heartrate);
 
         m_apiHeartRate = new FBKApiHeartRate(HeartRateActivity.this, m_apiHeartRateCallBack);
         m_apiHeartRate.registerBleListenerReceiver();
         m_heartArray.clear();
-        m_heartArray.add("Get Record");
-        m_heartArray.add("Read Battery Power");
-        m_heartArray.add("Read Firmware Version");
-        m_heartArray.add("Read Hardware Version");
-        m_heartArray.add("Read Software Version");
-        m_heartArray.add("Reset Name");
-        m_heartArray.add("Private get version");
-        m_heartArray.add("Private get mac");
-        m_heartArray.add("Private Enter OTA Mode");
-        initView();
-        loadDialog();
     }
 
 
@@ -267,79 +251,7 @@ public class HeartRateActivity extends Activity {
      * 输入参数：
      * 返回数据：
      ************************************************************************************/
-    private void initView() {
-        m_statusText = (TextView) this.findViewById(R.id.heart_text_status);
-        m_heartText = (TextView) this.findViewById(R.id.heart_text_heart);
 
-        m_heartListView = (ListView) this.findViewById(R.id.heart_list);
-        m_heartAdapter = new BaseAdapter() {
-            @Override
-            public int getCount() {
-                return m_heartArray.size();
-            }
-
-            @Override
-            public Object getItem(int position) {
-                return null;
-            }
-
-            @Override
-            public long getItemId(int position) {
-                return 0;
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                LayoutInflater inflater = HeartRateActivity.this.getLayoutInflater();
-                if (convertView == null) {
-                    convertView = inflater.inflate(R.layout.listview_main,null);
-                }
-
-                TextView title = (TextView) convertView.findViewById(R.id.list_text_name);
-                title.setText((position+1) + "、" + m_heartArray.get(position));
-
-                ImageView chooseImg = (ImageView) convertView.findViewById(R.id.list_image_choose);
-                chooseImg.setVisibility(View.INVISIBLE);
-
-                return convertView;
-            }
-        };
-
-
-        m_heartListView.setAdapter(m_heartAdapter);
-        m_heartListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    m_apiHeartRate.getHeartRateRecord();
-                }
-                else if (position == 1) {
-                    m_apiHeartRate.readDeviceBatteryPower();
-                }
-                else if (position == 2) {
-                    m_apiHeartRate.readFirmwareVersion();
-                }
-                else if (position == 3) {
-                    m_apiHeartRate.readHardwareVersion();
-                }
-                else if (position == 4) {
-                    m_apiHeartRate.readSoftwareVersion();
-                }
-                else if (position == 5) {
-                    m_inputDialog.show();
-                }
-                else if (position == 6) {
-                    m_apiHeartRate.getPrivateVersion();
-                }
-                else if (position == 7) {
-                    m_apiHeartRate.getPrivateMacAddress();
-                }
-                else if (position == 8) {
-                    m_apiHeartRate.enterOTAMode();
-                }
-            }
-        });
-    }
 
 
     /*************************************************************************************
@@ -348,26 +260,6 @@ public class HeartRateActivity extends Activity {
      * Parameter:
      * Return Data:
      *************************************************************************************/
-    private void loadDialog() {
-        m_inputDialog = new MyAlertInputDialog(this).builder()
-                .setTitle("New Name")
-                .setEditText("请勿输入中文名称，否则乱码");
-        m_inputDialog.setPositiveButton("OK", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nameString = m_inputDialog.getResult();
-                if (nameString.length() > 0) {
-                    m_apiHeartRate.resetDeviceName(nameString);
-                }
-                m_inputDialog.dismiss();
-            }
-        }).setNegativeButton("Cancel", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                m_inputDialog.dismiss();
-            }
-        });
-    }
 
 
     /************************************************************************************

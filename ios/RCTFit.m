@@ -1,7 +1,7 @@
 // RCTCalendarModule.m
-#import "RCTCalendarModule.h"
+#import "SosorunVirtualRun-Bridging-Header.h"
 
-@implementation RCTCalendarModule
+@implementation RCTFit
 
 // To export a module named RCTCalendarModule
 RCT_EXPORT_MODULE(Fitblekit);

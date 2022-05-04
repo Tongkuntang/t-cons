@@ -1,6 +1,6 @@
-package Activitys.Power;
+package com.sosorun.asia.Activitys.Power;
 
-import static com.onecoder.fitblekitdemo.Activitys.ScanDevices.DevicesScanActivity.SCAN_ACTIVITY_BACK;
+import static com.sosorun.asia.Activitys.ScanDevices.DevicesScanActivity.SCAN_ACTIVITY_BACK;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
@@ -21,8 +21,7 @@ import com.onecoder.fitblekit.API.Base.FBKApiBsaeMethod;
 import com.onecoder.fitblekit.API.Power.FBKApiPower;
 import com.onecoder.fitblekit.API.Power.FBKApiPowerCallBack;
 import com.onecoder.fitblekit.Ble.FBKBleDevice.FBKBleDeviceStatus;
-import com.onecoder.fitblekitdemo.Activitys.ScanDevices.DevicesScanActivity;
-import com.onecoder.fitblekitdemo.R;
+import com.sosorun.asia.Activitys.ScanDevices.DevicesScanActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -209,7 +208,6 @@ public class PowerActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_power);
 
         m_apiPower = new FBKApiPower(PowerActivity.this, m_apiPowerCallBack);
         m_apiPower.registerBleListenerReceiver();
@@ -221,7 +219,6 @@ public class PowerActivity extends Activity {
         m_powerArray.add("Private get version");
         m_powerArray.add("Private get mac");
         m_powerArray.add("Private Enter OTA Mode");
-        initView();
     }
 
 
@@ -245,76 +242,6 @@ public class PowerActivity extends Activity {
      * 输入参数：
      * 返回数据：
      ************************************************************************************/
-    private void initView() {
-        m_statusText = (TextView) this.findViewById(R.id.power_text_status);
-        m_powerText = (TextView) this.findViewById(R.id.power_text_power);
-
-        m_powerListView = (ListView) this.findViewById(R.id.power_list);
-        m_powerAdapter = new BaseAdapter() {
-            @Override
-            public int getCount() {
-                return m_powerArray.size();
-            }
-
-            @Override
-            public Object getItem(int position) {
-                return null;
-            }
-
-            @Override
-            public long getItemId(int position) {
-                return 0;
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                LayoutInflater inflater = PowerActivity.this.getLayoutInflater();
-                if (convertView == null) {
-                    convertView = inflater.inflate(R.layout.listview_main,null);
-                }
-
-                TextView title = (TextView) convertView.findViewById(R.id.list_text_name);
-                title.setText((position+1) + "、" + m_powerArray.get(position));
-
-                ImageView chooseImg = (ImageView) convertView.findViewById(R.id.list_image_choose);
-                chooseImg.setVisibility(View.INVISIBLE);
-
-                return convertView;
-            }
-        };
-
-
-        m_powerListView.setAdapter(m_powerAdapter);
-        m_powerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    m_apiPower.readDeviceBatteryPower();
-                }
-                else if (position == 1) {
-                    m_apiPower.readFirmwareVersion();
-                }
-                else if (position == 2) {
-                    m_apiPower.readHardwareVersion();
-                }
-                else if (position == 3) {
-                    m_apiPower.readSoftwareVersion();
-                }
-                else if (position == 4) {
-                    m_apiPower.getPrivateVersion();
-                }
-                else if (position == 5) {
-                    m_apiPower.getPrivateMacAddress();
-                }
-                else if (position == 6) {
-                    m_apiPower.enterOTAMode();
-                }
-                else if (position == 7) {
-                    m_apiPower.calibrationPower();
-                }
-            }
-        });
-    }
 
 
     /************************************************************************************

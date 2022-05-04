@@ -5,9 +5,9 @@
  * 创建日期：2020年04月14日
  ****************************************************************************************/
 
-package Activitys.KTBBQ;
+package com.sosorun.asia.Activitys.KTBBQ;
 
-import static com.onecoder.fitblekitdemo.Activitys.ScanDevices.DevicesScanActivity.SCAN_ACTIVITY_BACK;
+//import com.sosorun.asia.Activitys.ScanDevices.DevicesScanActivity.SCAN_ACTIVITY_BACK;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
@@ -30,8 +30,8 @@ import com.onecoder.fitblekit.API.KTBBQ.FBKApiKTBBQCallBack;
 import com.onecoder.fitblekit.API.KTBBQ.FBKKTBBQUnits;
 import com.onecoder.fitblekit.Ble.FBKBleDevice.FBKBleDeviceStatus;
 import com.onecoder.fitblekit.Protocol.KTBBQ.Parameter.FBKKTBBQResultValue;
-import com.onecoder.fitblekitdemo.Activitys.ScanDevices.DevicesScanActivity;
-import com.onecoder.fitblekitdemo.R;
+import com.sosorun.asia.Activitys.ScanDevices.DevicesScanActivity;
+//import com.sosorun.asia.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -256,7 +256,6 @@ public class KTBBQActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ktbbq);
 
         m_ktbbq = new FBKApiKTBBQ(KTBBQActivity.this, m_apiKTBBQCallBack);
 //        m_ktbbq.editDefaultPara(15,-90,5);
@@ -283,7 +282,7 @@ public class KTBBQActivity extends Activity {
         m_ktbbqArray.add("Private get version");
         m_ktbbqArray.add("Private get mac");
         m_ktbbqArray.add("Private Enter OTA Mode");
-        initView();
+//        initView();
     }
 
 
@@ -307,113 +306,7 @@ public class KTBBQActivity extends Activity {
      * 输入参数：
      * 返回数据：
      ************************************************************************************/
-    private void initView() {
-        m_statusText = (TextView) this.findViewById(R.id.ktbbq_text_status);
-        m_ktbbqListView = (ListView) this.findViewById(R.id.ktbbq_list);
-        m_ktbbqAdapter = new BaseAdapter() {
-            @Override
-            public int getCount() {
-                return m_ktbbqArray.size();
-            }
 
-            @Override
-            public Object getItem(int position) {
-                return null;
-            }
-
-            @Override
-            public long getItemId(int position) {
-                return 0;
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                LayoutInflater inflater = KTBBQActivity.this.getLayoutInflater();
-                if (convertView == null) {
-                    convertView = inflater.inflate(R.layout.listview_main,null);
-                }
-
-                TextView title = (TextView) convertView.findViewById(R.id.list_text_name);
-                title.setText((position+1) + "、" + m_ktbbqArray.get(position));
-
-                ImageView chooseImg = (ImageView) convertView.findViewById(R.id.list_image_choose);
-                chooseImg.setVisibility(View.INVISIBLE);
-
-                return convertView;
-            }
-        };
-
-
-        m_ktbbqListView.setAdapter(m_ktbbqAdapter);
-        m_ktbbqListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    m_ktbbq.setBBQTemperature(-10, 1, false);
-                }
-                else if (position == 1) {
-                    m_ktbbq.setBBQTemperature(80, 1, true);
-                }
-                else if (position == 2) {
-                    m_ktbbq.getBBQTemperature(1, false);
-                }
-                else if (position == 3) {
-                    m_ktbbq.getBBQTemperature(1, true);
-                }
-                else if (position == 4) {
-                    m_ktbbq.deleteBBQTemperature(1, false);
-                }
-                else if (position == 5) {
-                    m_ktbbq.deleteBBQTemperature(1, true);
-                }
-                else if (position == 6) {
-                    m_ktbbq.setBBQTime(90, 1);
-                }
-                else if (position == 7) {
-                    m_ktbbq.setBBQUnit(FBKKTBBQUnits.C, 1);
-                }
-                else if (position == 8) {
-                    m_ktbbq.setBBQUnit(FBKKTBBQUnits.F, 1);
-                }
-                else if (position == 9) {
-                    m_ktbbq.getBBQUnit(1);
-                }
-                else if (position == 10) {
-                    m_ktbbq.readyAlarm();
-                }
-                else if (position == 11) {
-                    m_ktbbq.getMacAddress();
-                }
-                else if (position == 12) {
-                    m_ktbbq.getDeviceVersion();
-                }
-                else if (position == 13) {
-                    m_ktbbq.enterOTAMode();
-                }
-                else if (position == 14) {
-                    m_ktbbq.setAlarmTime(5);
-                }
-                else if (position == 15) {
-                    m_ktbbq.deleteAlarmTime();
-                }
-                else if (position == 16) {
-                    m_ktbbq.getAlarmTime();
-                }
-                else if (position == 17) {
-                    m_ktbbq.disconnectBle();
-                }
-                else if (position == 18) {
-                    m_ktbbq.getPrivateVersion();
-                }
-                else if (position == 19) {
-                    m_ktbbq.getPrivateMacAddress();
-                }
-                else if (position == 20) {
-                    m_ktbbq.enterOTAMode();
-                }
-            }
-        });
-    }
 
 
     /************************************************************************************
@@ -448,7 +341,7 @@ public class KTBBQActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == KTBBQ_TO_SCAN && resultCode == SCAN_ACTIVITY_BACK) {
+        if (requestCode == KTBBQ_TO_SCAN) {
             Log.e(TAG,"onActivityResult");
             m_bluetoothDevice = data.getParcelableExtra("bluetooth");
             m_ktbbq.connecBluetooth(m_bluetoothDevice);

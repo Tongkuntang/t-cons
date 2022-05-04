@@ -5,7 +5,7 @@
  * 创建日期：2019年08月06日
  ****************************************************************************************/
 
-package Activitys.ScanDevices;
+package com.sosorun.asia.Activitys.ScanDevices;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -21,10 +21,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.facebook.react.bridge.ReactMethod;
 import com.onecoder.fitblekit.API.ScanDevices.FBKApiScan;
 import com.onecoder.fitblekit.API.ScanDevices.FBKApiScanCallBack;
 import com.onecoder.fitblekit.Ble.FBKBleDevice.FBKBleDevice;
-import com.onecoder.fitblekitdemo.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +52,7 @@ public class DevicesScanActivity extends Activity {
         public void bleScanResult(List<FBKBleDevice> deviceArray, FBKApiScan apiScan) {
             m_deviceArray = deviceArray;
             m_scanListAdapter.notifyDataSetChanged();
+            Log.e(TAG,"BBODevice *****"+deviceArray.toString());
         }
 
         @Override
@@ -67,14 +68,9 @@ public class DevicesScanActivity extends Activity {
      * 输入参数：
      * 返回数据：
      ************************************************************************************/
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_devicescan);
-
+    @ReactMethod
+    public void onCreate() {
         m_cellNumber = -1;
-        initView();
-
         m_scanner = new FBKApiScan();
         m_scanner.setScanRssi(-120);
         m_scanner.startScan(m_apiScanCallBack);
@@ -107,7 +103,7 @@ public class DevicesScanActivity extends Activity {
      * 返回数据：
      ************************************************************************************/
     private void initView() {
-        m_scanListView = (ListView) this.findViewById(R.id.devicescan_list);
+
         m_scanListAdapter = new BaseAdapter() {
             @Override
             public int getCount() {
@@ -128,19 +124,15 @@ public class DevicesScanActivity extends Activity {
             public View getView(int position, View convertView, ViewGroup parent) {
                 LayoutInflater inflater = DevicesScanActivity.this.getLayoutInflater();
                 if (convertView == null) {
-                    convertView = inflater.inflate(R.layout.listview_main,null);
+
                 }
 
                 FBKBleDevice myBleDevice = m_deviceArray.get(position);
-                TextView title = (TextView) convertView.findViewById(R.id.list_text_name);
-                title.setText(myBleDevice.getDeviceName()+" "+myBleDevice.getDeviceRssi());
+
 
                 if (myBleDevice.isBBODevice()) {
                     Log.e(TAG,"BBODevice *****"+myBleDevice.getBBQInformation().toString());
                 }
-
-                ImageView chooseImg = (ImageView) convertView.findViewById(R.id.list_image_choose);
-                chooseImg.setVisibility(View.INVISIBLE);
 
                 return convertView;
             }
@@ -173,12 +165,6 @@ public class DevicesScanActivity extends Activity {
      * 输入参数：
      * 返回数据：
      ************************************************************************************/
-    public void backAction(View view) {
-        m_scanner.stopScan();
-        m_deviceArray.clear();
-        m_scanListAdapter.notifyDataSetChanged();
-        finish();
-    }
 
 
 }

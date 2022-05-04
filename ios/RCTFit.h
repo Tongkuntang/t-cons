@@ -1,12 +1,6 @@
-//
-//  RCTFit.h
-//  SosorunVirtualRun
-//
-//  Created by WW on 28/1/2565 BE.
-//
+#import <React/RCTEventEmitter.h>
+#import <React/RCTBridgeModule.h>
+#import <FitBleKit/FitBleKit.h>
 
-#ifndef RCTFit_h
-#define RCTFit_h
-
-
-#endif /* RCTFit_h */
+@interface Fitblekit : RCTEventEmitter <RCTBridgeModule>
+@end

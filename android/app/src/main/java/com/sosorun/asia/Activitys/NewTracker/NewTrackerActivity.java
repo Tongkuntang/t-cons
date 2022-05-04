@@ -5,9 +5,9 @@
  * 创建日期：2019年08月06日
  ****************************************************************************************/
 
-package Activitys.NewTracker;
+package com.sosorun.asia.Activitys.NewTracker;
 
-import static com.onecoder.fitblekitdemo.Activitys.ScanDevices.DevicesScanActivity.SCAN_ACTIVITY_BACK;
+import static com.sosorun.asia.Activitys.ScanDevices.DevicesScanActivity.SCAN_ACTIVITY_BACK;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
@@ -34,8 +34,8 @@ import com.onecoder.fitblekit.Protocol.Common.Parameter.FBKParaNotice;
 import com.onecoder.fitblekit.Protocol.Common.Parameter.FBKParaSitWater;
 import com.onecoder.fitblekit.Protocol.Common.Parameter.FBKParaSleep;
 import com.onecoder.fitblekit.Protocol.Common.Parameter.FBKParaUserInfo;
-import com.onecoder.fitblekitdemo.Activitys.ScanDevices.DevicesScanActivity;
-import com.onecoder.fitblekitdemo.R;
+import com.sosorun.asia.Activitys.ScanDevices.DevicesScanActivity;
+import com.sosorun.asia.R;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -285,7 +285,6 @@ public class NewTrackerActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_newtracker);
 
         Log.e(TAG,"NewTrackerActivity---"+Thread.currentThread().getId());
 
@@ -319,7 +318,6 @@ public class NewTrackerActivity extends Activity {
         m_newTrackerArray.add("Private get version");
         m_newTrackerArray.add("Private get mac");
         m_newTrackerArray.add("Private Enter OTA Mode");
-        initView();
     }
 
 
@@ -343,214 +341,7 @@ public class NewTrackerActivity extends Activity {
      * 输入参数：
      * 返回数据：
      ************************************************************************************/
-    private void initView() {
-        m_statusText = (TextView) this.findViewById(R.id.newtracker_text_status);
-        m_stepsText = (TextView) this.findViewById(R.id.newtracker_text_steps);
-        m_caloriesText = (TextView) this.findViewById(R.id.newtracker_text_calories);
-        m_distanceText = (TextView) this.findViewById(R.id.newtracker_text_distance);
-        m_heartRateText = (TextView) this.findViewById(R.id.newtracker_text_heartrate);
 
-        m_newTrackerListView = (ListView) this.findViewById(R.id.newtracker_list);
-        m_newTrackerAdapter = new BaseAdapter() {
-            @Override
-            public int getCount() {
-                return m_newTrackerArray.size();
-            }
-
-            @Override
-            public Object getItem(int position) {
-                return null;
-            }
-
-            @Override
-            public long getItemId(int position) {
-                return 0;
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                LayoutInflater inflater = NewTrackerActivity.this.getLayoutInflater();
-                if (convertView == null) {
-                    convertView = inflater.inflate(R.layout.listview_main,null);
-                }
-
-                TextView title = (TextView) convertView.findViewById(R.id.list_text_name);
-                title.setText((position+1) + "、" + m_newTrackerArray.get(position));
-
-                ImageView chooseImg = (ImageView) convertView.findViewById(R.id.list_image_choose);
-                chooseImg.setVisibility(View.INVISIBLE);
-
-                return convertView;
-            }
-        };
-
-
-        m_newTrackerListView.setAdapter(m_newTrackerAdapter);
-        m_newTrackerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    m_apiNewTracker.setUTC(new Date());
-                }
-                else if (position == 1) {
-                    FBKParaUserInfo myUserInfo = new FBKParaUserInfo();
-                    myUserInfo.setGender(1);
-                    myUserInfo.setAge(25);
-                    myUserInfo.setHeight(170);
-                    myUserInfo.setWeight(72.1);
-                    myUserInfo.setStepSize(70);
-                    myUserInfo.setStepGoal(10000);
-                    m_apiNewTracker.setUserInfo(myUserInfo);
-                }
-                else if (position == 2) {
-                    FBKParaSleep mySleepInfo = new FBKParaSleep();
-                    mySleepInfo.setNormalStartHour(22);
-                    mySleepInfo.setNormalStartMinute(0);
-                    mySleepInfo.setNormalEndHour(8);
-                    mySleepInfo.setNormalEndMinute(0);
-                    mySleepInfo.setWeekendStartHour(23);
-                    mySleepInfo.setWeekendStartMinute(0);
-                    mySleepInfo.setWeekendEndHour(9);
-                    mySleepInfo.setWeekendEndMinute(0);
-                    m_apiNewTracker.setSleepInfo(mySleepInfo);
-                }
-                else if (position == 3) {
-                    FBKParaSitWater myWaterInfo = new FBKParaSitWater();
-                    myWaterInfo.setAmStartHour(8);
-                    myWaterInfo.setAmStartMinute(03);
-                    myWaterInfo.setAmEndHour(12);
-                    myWaterInfo.setAmEndMinute(03);
-                    myWaterInfo.setPmStartHour(16);
-                    myWaterInfo.setPmStartMinute(57);
-                    myWaterInfo.setPmEndHour(18);
-                    myWaterInfo.setPmEndMinute(57);
-                    myWaterInfo.setIntervalMinute(30);
-                    myWaterInfo.setSwitchStatus(true);
-                    m_apiNewTracker.setWaterInfo(myWaterInfo);
-                }
-                else if (position == 4) {
-                    FBKParaSitWater mySitInfo = new FBKParaSitWater();
-                    mySitInfo.setAmStartHour(8);
-                    mySitInfo.setAmStartMinute(23);
-                    mySitInfo.setAmEndHour(12);
-                    mySitInfo.setAmEndMinute(23);
-                    mySitInfo.setPmStartHour(16);
-                    mySitInfo.setPmStartMinute(59);
-                    mySitInfo.setPmEndHour(17);
-                    mySitInfo.setPmEndMinute(59);
-                    mySitInfo.setIntervalMinute(30);
-                    mySitInfo.setSwitchStatus(true);
-                    m_apiNewTracker.setSitInfo(mySitInfo);
-                }
-                else if (position == 5) {
-                    FBKParaNotice myNoticeInfo = new FBKParaNotice();
-                    myNoticeInfo.setMail(true);
-                    myNoticeInfo.setMessage(true);
-                    myNoticeInfo.setMissedCall(true);
-                    myNoticeInfo.setQQ(true);
-                    myNoticeInfo.setWeChat(true);
-                    myNoticeInfo.setFaceBook(true);
-                    myNoticeInfo.setWhatsAPP(true);
-                    myNoticeInfo.setSkype(true);
-                    myNoticeInfo.setOthers(true);
-                    m_apiNewTracker.setNoticeInfo(myNoticeInfo);
-                }
-                else if (position == 6) {
-                    List<FBKParaAlarm> alarmInfoList = new ArrayList<>();
-
-                    List<String> repeatTimeList1 = new ArrayList<>();
-                    repeatTimeList1.add("1");
-                    repeatTimeList1.add("2");
-                    repeatTimeList1.add("3");
-                    repeatTimeList1.add("4");
-                    repeatTimeList1.add("5");
-                    repeatTimeList1.add("6");
-                    repeatTimeList1.add("7");
-
-                    FBKParaAlarm myAlarmInfo1 = new FBKParaAlarm();
-                    myAlarmInfo1.setAlarmId(0);
-                    myAlarmInfo1.setAlarmName("起床");
-                    myAlarmInfo1.setAlarmTime("14:08");
-                    myAlarmInfo1.setRepeatTime(repeatTimeList1);
-                    myAlarmInfo1.setSwitchStatus(true);
-                    alarmInfoList.add(myAlarmInfo1);
-
-                    List<String> repeatTimeList2 = new ArrayList<>();
-                    repeatTimeList2.add("0");
-
-                    FBKParaAlarm myAlarmInfo2 = new FBKParaAlarm();
-                    myAlarmInfo2.setAlarmId(1);
-                    myAlarmInfo2.setAlarmName("生日");
-                    myAlarmInfo2.setAlarmTime("2019-08-31 14:00:00");
-                    myAlarmInfo2.setRepeatTime(repeatTimeList2);
-                    myAlarmInfo2.setSwitchStatus(true);
-                    alarmInfoList.add(myAlarmInfo2);
-
-                    m_apiNewTracker.setAlarmInfo(alarmInfoList);
-                }
-                else if (position == 7) {
-                    m_apiNewTracker.setBikeInfo(2.096);
-                }
-                else if (position == 8) {
-                    m_apiNewTracker.setHeartRateMax(220);
-                }
-                else if (position == 9) {
-                    m_apiNewTracker.openRealTimeSteps(true);
-                }
-                else if (position == 10) {
-                    m_apiNewTracker.openRealTimeSteps(false);
-                }
-                else if (position == 11) {
-                    m_apiNewTracker.openTakePhoto(true);
-                }
-                else if (position == 12) {
-                    m_apiNewTracker.openHeartRateMode(true);
-                }
-                else if (position == 13) {
-                    m_apiNewTracker.getTotalRecord();
-                }
-                else if (position == 14) {
-                    m_apiNewTracker.getStepRecord();
-                }
-                else if (position == 15) {
-                    m_apiNewTracker.getSleepRecord();
-                }
-                else if (position == 16) {
-                    m_apiNewTracker.getHeartRateRecord();
-                }
-                else if (position == 17) {
-                    m_apiNewTracker.getBikeRecord();
-                }
-                else if (position == 18) {
-                    m_apiNewTracker.getTrainRecord();
-                }
-                else if (position == 19) {
-                    m_apiNewTracker.getEverydayRecord();
-                }
-                else if (position == 20) {
-                    m_apiNewTracker.readDeviceBatteryPower();
-                }
-                else if (position == 21) {
-                    m_apiNewTracker.readFirmwareVersion();
-                }
-                else if (position == 22) {
-                    m_apiNewTracker.readHardwareVersion();
-                }
-                else if (position == 23) {
-                    m_apiNewTracker.readSoftwareVersion();
-                }
-                else if (position == 24) {
-                    m_apiNewTracker.getPrivateVersion();
-                }
-                else if (position == 25) {
-                    m_apiNewTracker.getPrivateMacAddress();
-                }
-                else if (position == 26) {
-                    m_apiNewTracker.enterOTAMode();
-                }
-            }
-        });
-    }
 
 
     /************************************************************************************
